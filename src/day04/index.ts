@@ -166,8 +166,33 @@ const part1 = (rawInput: string) => {
 
 const part2 = (rawInput: string) => {
   const input = parseInput(rawInput);
+  const board = getBoard(input);
+  let occurences = 0;
 
-  return;
+  for (let x = 0; x < board.length; x++) {
+    // rows
+    for (let y = 0; y < board[x].length; y++) {
+      // columns
+      const cell = board[x][y];
+
+      if (cell === "A") {
+        if (
+          x > 0 &&
+          x < board.length - 1 &&
+          y > 0 &&
+          y < board[x].length - 1 &&
+          ((board[x - 1][y - 1] === "M" && board[x + 1][y + 1] === "S") ||
+            (board[x - 1][y - 1] === "S" && board[x + 1][y + 1] === "M")) &&
+          ((board[x - 1][y + 1] === "M" && board[x + 1][y - 1] === "S") ||
+            (board[x - 1][y + 1] === "S" && board[x + 1][y - 1] === "M"))
+        ) {
+          occurences++;
+        }
+      }
+    }
+  }
+
+  return occurences;
 };
 
 run({
@@ -191,10 +216,19 @@ MXMXAXMASX`,
   },
   part2: {
     tests: [
-      // {
-      //   input: ``,
-      //   expected: "",
-      // },
+      {
+        input: `MMMSXXMASM
+MSAMXMSMSA
+AMXSXMAAMM
+MSAMASMSMX
+XMASAMXAMM
+XXAMMXXAMA
+SMSMSASXSS
+SAXAMASAAA
+MAMMMXMMMM
+MXMXAXMASX`,
+        expected: 9,
+      },
     ],
     solution: part2,
   },
